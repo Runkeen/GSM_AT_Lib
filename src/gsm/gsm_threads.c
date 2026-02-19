@@ -47,7 +47,7 @@ void
 gsm_thread_produce(void* const arg) {
     gsm_sys_sem_t* sem = arg;
     gsm_t* e = &gsm;
-    gsm_msg_t* msg;
+    gsm_msg_t gsm_msg;
     gsmr_t res;
     uint32_t time;
 
@@ -59,7 +59,12 @@ gsm_thread_produce(void* const arg) {
     gsm_core_lock();
     while (1) {
         gsm_core_unlock();
+        gsm_msg_t* msg = &gsm_msg;
+#if (osCMSIS < 0x20000U)
         time = gsm_sys_mbox_get(&e->mbox_producer, (void **)&msg, 0);   /* Get message from queue */
+#else
+        time = gsm_sys_mbox_get(&e->mbox_producer, (void*)msg, 0);   /* Get message from queue */
+#endif
         GSM_THREAD_PRODUCER_HOOK();             /* Execute producer thread hook */
         gsm_core_lock();
         if (time == GSM_SYS_TIMEOUT || msg == NULL) {   /* Check valid message */

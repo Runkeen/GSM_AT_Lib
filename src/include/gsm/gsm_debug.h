@@ -111,6 +111,9 @@ extern "C" {
         GSM_DEBUGF(c, fmt, ## __VA_ARGS__); \
     }                                       \
 } while (0)
+
+#define GSM_DBG(fmt, ...) GSM_DEBUGF(GSM_DBG_ON | GSM_CFG_DBG_TYPES_ON | GSM_DBG_LVL_MASK, fmt, ## __VA_ARGS__)
+
 #else
 #undef GSM_CFG_DBG
 #define GSM_CFG_DBG                 GSM_DBG_OFF

@@ -37,7 +37,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include "gsm_config.h"
+#include <stdint.h>
+#include <stddef.h>
 
 /**
  * \ingroup         GSM_PORT
@@ -103,7 +104,7 @@ uint8_t     gsm_sys_sem_invalid(gsm_sys_sem_t* p);
 uint8_t     gsm_sys_mbox_create(gsm_sys_mbox_t* b, size_t size);
 uint8_t     gsm_sys_mbox_delete(gsm_sys_mbox_t* b);
 uint32_t    gsm_sys_mbox_put(gsm_sys_mbox_t* b, void* m);
-uint32_t    gsm_sys_mbox_get(gsm_sys_mbox_t* b, void** m, uint32_t timeout);
+uint32_t    gsm_sys_mbox_get(gsm_sys_mbox_t* b, void* m, uint32_t timeout);
 uint8_t     gsm_sys_mbox_putnow(gsm_sys_mbox_t* b, void* m);
 uint8_t     gsm_sys_mbox_getnow(gsm_sys_mbox_t* b, void** m);
 uint8_t     gsm_sys_mbox_isvalid(gsm_sys_mbox_t* b);

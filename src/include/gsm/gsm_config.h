@@ -1,6 +1,6 @@
-/**	
- * \file            gsm_sys_cmsis_os.h
- * \brief           CMSIS-OS based system file
+/**
+ * \file            gsm_config_template.h
+ * \brief           Template config file
  */
 
 /*
@@ -30,39 +30,26 @@
  *
  * Author:          Tilen MAJERLE <tilen@majerle.eu>
  */
-#ifndef GSM_HDR_SYSTEM_CMSIS_OS_H
-#define GSM_HDR_SYSTEM_CMSIS_OS_H
+#ifndef GSM_HDR_CONFIG_H
+#define GSM_HDR_CONFIG_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+/* Rename this file to "gsm_config.h" for your application */
 
-#include "stdint.h"
-#include "stdlib.h"
+/*
+ * Open "include/gsm/gsm_config_default.h" and
+ * copy & replace here settings you want to change values
+ */
 
-#include "gsm/gsm_config.h"
+#define GSM_CFG_INPUT_USE_PROCESS   1
+#define GSM_CFG_RESET_ON_INIT       0
+#define GSM_CFG_DBG                 1
+#define GSM_CFG_DBG_TYPES_ON        1
+#define GSM_CFG_DBG_VAR             GSM_DBG_TYPE_TRACE
 
-#if GSM_CFG_OS && !__DOXYGEN__
-#include "cmsis_os.h"
+#define GSM_CFG_SYS_PORT            GSM_SYS_PORT_CMSIS_OS
 
-typedef osMutexId           gsm_sys_mutex_t;
-typedef osSemaphoreId       gsm_sys_sem_t;
-typedef osMessageQId        gsm_sys_mbox_t;
-typedef osThreadId          gsm_sys_thread_t;
-typedef osPriority          gsm_sys_thread_prio_t;
-#define GSM_SYS_MBOX_NULL           (osMessageQId)0
-#define GSM_SYS_SEM_NULL            (osSemaphoreId)0
-#define GSM_SYS_MUTEX_NULL          (osMutexId)0
-#define GSM_SYS_TIMEOUT             ((uint32_t)osWaitForever)
-#define GSM_SYS_THREAD_PRIO         (osPriorityNormal)
-#define GSM_SYS_THREAD_SS           (1024)
+/* After user configuration, call default config to merge config together */
+#include "gsm/gsm_config_default.h"
+#include "system/gsm_ll_optimal.h"
 
-#include "gsm_sys.h"
-
-#endif /* GSM_CFG_OS && !__DOXYGEN__ */
-
-#ifdef __cplusplus
-};
-#endif /* __cplusplus */
-
-#endif /* GSM_HDR_SYSTEM_CMSIS_OS_H */
+#endif /* GSM_HDR_CONFIG_H */
