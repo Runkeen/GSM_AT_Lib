@@ -2094,6 +2094,21 @@ gsmi_initiate_cmd(gsm_msg_t* msg) {
             AT_PORT_SEND_END();
             break;
         }
+        case GSM_CMD_CIPSGTXT: {
+            AT_PORT_SEND_BEGIN();
+            AT_PORT_SEND_CONST_STR("+CGDCONT=1");
+            gsmi_send_string(msg->msg.pdp_ctx.pdp_type, 1, 1, 1);
+            gsmi_send_string(msg->msg.pdp_ctx.apn, 1, 1, 1);
+            AT_PORT_SEND_END();
+            break;
+        case GSM_CMD_PPP: {
+            AT_PORT_SEND_BEGIN();
+            AT_PORT_SEND_CONST_STR("+++");
+            AT_PORT_SEND_END();
+            break;
+        }
+        }
+
 #endif /* GSM_CFG_NETWORK */
 #if GSM_CFG_NMR
         case GSM_CMD_NMR_ENABLE: {

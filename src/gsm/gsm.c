@@ -69,7 +69,7 @@ def_callback(gsm_evt_t* evt) {
  * \return          \ref gsmOK on success, member of \ref gsmr_t enumeration otherwise
  */
 gsmr_t
-gsm_init(gsm_evt_fn evt_func, const uint32_t blocking) {
+gsm_init(gsm_evt_fn evt_func, const uint32_t blocking, void** priv) {
     gsmr_t res = gsmOK;
 
     gsm.status.f.initialized = 0;               /* Clear possible init flag */
@@ -118,11 +118,16 @@ gsm_init(gsm_evt_fn evt_func, const uint32_t blocking) {
         goto cleanup;
     }
     gsm_sys_sem_wait(&gsm.sem_sync, 0);         /* Wait semaphore, should be unlocked in produce thread */
-    gsm_sys_sem_release(&gsm.sem_sync);         /* Release semaphore manually */
 
     gsm_core_lock();
     gsm.ll.uart.baudrate = GSM_CFG_AT_PORT_BAUDRATE;
+    gsm.ll.sem = &gsm.sem_sync;
     gsm_ll_init(&gsm.ll);                       /* Init low-level communication */
+    gsm_sys_sem_wait(&gsm.sem_sync, 0);         /* Wait semaphore, should be unlocked in usart_ll_thread thread */
+    //gsm_sys_sem_delete(&gsm.sem_sync);           /* Delete sync semaphore between threads */
+    gsm_sys_sem_release(&gsm.sem_sync);         /* Release semaphore manually */
+
+    *priv = gsm.ll.uart.cfg;
 
 #if !GSM_CFG_INPUT_USE_PROCESS
     gsm_buff_init(&gsm.buff, GSM_CFG_RCV_BUFF_SIZE);    /* Init buffer for input data */

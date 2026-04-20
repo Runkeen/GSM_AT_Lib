@@ -132,7 +132,55 @@ gsm_network_is_attached(void) {
     return res;
 }
 
+/**
+ * \brief           Set PDP context
+ * \param[in]       pdp_type: "IP" string
+ * \param[in]       apn: APN name
+ * \param[in]       evt_fn: Callback function called when command has finished. Set to `NULL` when not used
+ * \param[in]       evt_arg: Custom argument for event callback function
+ * \param[in]       blocking: Status whether command should be blocking or not
+ * \return          \ref gsmOK on success, member of \ref gsmr_t enumeration otherwise
+ */
+gsmr_t
+gsm_network_pdp(const char* pdp_type, const char* apn, const gsm_api_cmd_evt_fn evt_fn,
+        void* const evt_arg, const uint32_t blocking) {
+    GSM_MSG_VAR_DEFINE(msg);
+
+    GSM_MSG_VAR_ALLOC(msg);
+    GSM_MSG_VAR_SET_EVT(msg);
+#if GSM_CFG_CONN
+    GSM_MSG_VAR_REF(msg).cmd = GSM_CMD_CIPSGTXT;
+#endif /* GSM_CFG_CONN */
+    GSM_MSG_VAR_REF(msg).msg.pdp_ctx.pdp_type = pdp_type;
+    GSM_MSG_VAR_REF(msg).msg.pdp_ctx.apn = apn;
+    
+    return gsmi_send_msg_to_producer_mbox(&GSM_MSG_VAR_REF(msg), gsmi_initiate_cmd, 200000);
+}
+
 #endif /* GSM_CFG_NETWORK || __DOXYGEN__ */
+
+gsmr_t
+gsm_reg_check(const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking) {
+    GSM_MSG_VAR_DEFINE(msg);
+
+    GSM_MSG_VAR_ALLOC(msg);
+    GSM_MSG_VAR_SET_EVT(msg);
+    GSM_MSG_VAR_REF(msg).cmd = GSM_CMD_CREG_GET;
+
+    return gsmi_send_msg_to_producer_mbox(&GSM_MSG_VAR_REF(msg), gsmi_initiate_cmd, 60000);
+}
+
+gsmr_t
+gsm_network_pause_transfer(const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking) {
+    GSM_MSG_VAR_DEFINE(msg);
+
+    GSM_MSG_VAR_ALLOC(msg);
+    GSM_MSG_VAR_SET_EVT(msg);
+    GSM_MSG_VAR_REF(msg).cmd = GSM_CMD_PPP;
+
+    return gsmi_send_msg_to_producer_mbox(&GSM_MSG_VAR_REF(msg), gsmi_initiate_cmd, 60000);
+}
+
 
 /**
  * \brief           Read RSSI signal from network operator

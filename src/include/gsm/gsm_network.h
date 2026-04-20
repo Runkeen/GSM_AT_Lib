@@ -56,6 +56,10 @@ gsmr_t      gsm_network_detach(const gsm_api_cmd_evt_fn evt_fn, void* const evt_
 uint8_t     gsm_network_is_attached(void);
 gsmr_t      gsm_network_copy_ip(gsm_ip_t* ip);
 gsmr_t      gsm_network_check_status(const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking);
+gsmr_t      gsm_network_pdp(const char* pdp_type, const char* apn,
+                    const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking);
+gsmr_t      gsm_reg_check(const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking);
+
 
 /**
  * \}

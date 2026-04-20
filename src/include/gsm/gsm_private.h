@@ -40,6 +40,7 @@ extern "C" {
 #include "gsm/gsm.h"
 #include "gsm/gsm_typedefs.h"
 #include "gsm/gsm_debug.h"
+#include "gsm/gsm_mem.h"
 
 /**
  * \addtogroup      GSM_TYPEDEFS
@@ -515,6 +516,13 @@ typedef struct gsm_msg {
             const char* user;                   /*!< APN username */
             const char* pass;                   /*!< APN password */
         } network_attach;                       /*!< Settings for network attach */
+        struct {
+            const char* pdp_type;               /*!< PDP type */
+            const char* apn;                    /*!< APN address */
+            const char* pdp_addr;               /*!< PDP address */
+        	uint32_t d_comp;                    /*!< PDP data compression */
+        	uint32_t h_comp;                    /*!< PDP header compression */
+        } pdp_ctx;                              /*!< Settings for PDP (Packet Data Protocol) Context */
 #endif /* GSM_CFG_NETWORK || __DOXYGEN__ */
 #if GSM_CFG_NMR || __DOXYGEN__
         struct {

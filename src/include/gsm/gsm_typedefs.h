@@ -614,6 +614,10 @@ typedef size_t  (*gsm_ll_send_fn)(const void* data, size_t len);
  */
 typedef uint8_t (*gsm_ll_reset_fn)(uint8_t state);
 
+typedef struct {                       // queue object data type
+    uint8_t state;
+} usart_ll_msg_t;
+
 /**
  * \ingroup         GSM_LL
  * \brief           Low level user specific functions
@@ -623,7 +627,12 @@ typedef struct {
     gsm_ll_reset_fn reset_fn;                   /*!< Reset callback function */
     struct {
         uint32_t baudrate;                      /*!< UART baudrate value */
+        void* cfg;
     } uart;                                     /*!< UART communication parameters */
+    gsm_sys_sem_t* sem; 
+    gsm_sys_thread_t thread_id;
+    gsm_sys_mbox_t mbox;
+    usart_ll_msg_t message;
 } gsm_ll_t;
 
 /**

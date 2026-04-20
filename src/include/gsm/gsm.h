@@ -46,7 +46,7 @@ extern "C" {
  * \{
  */
 
-gsmr_t      gsm_init(gsm_evt_fn evt_func, const uint32_t blocking);
+gsmr_t      gsm_init(gsm_evt_fn evt_func, const uint32_t blocking, void** priv);
 gsmr_t      gsm_reset(const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking);
 gsmr_t      gsm_reset_with_delay(uint32_t delay, const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking);
 

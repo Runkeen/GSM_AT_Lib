@@ -118,7 +118,7 @@ gsm_call_start(const char* number,
 
     GSM_ASSERT("number != NULL", number != NULL);   /* Assert input parameters */
     CHECK_ENABLED();                            /* Check if enabled */
-    GSM_ASSERT("call_ready", check_ready() == gsmOK);   /* Assert input parameters */
+    //GSM_ASSERT("call_ready", check_ready() == gsmOK);   /* Assert input parameters */
 
     GSM_MSG_VAR_ALLOC(msg);
     GSM_MSG_VAR_SET_EVT(msg);
@@ -159,7 +159,7 @@ gsmr_t
 gsm_call_hangup(const gsm_api_cmd_evt_fn evt_fn, void* const evt_arg, const uint32_t blocking) {
     GSM_MSG_VAR_DEFINE(msg);
 
-    CHECK_ENABLED();
+    //CHECK_ENABLED();
 
     GSM_MSG_VAR_ALLOC(msg);
     GSM_MSG_VAR_SET_EVT(msg);
