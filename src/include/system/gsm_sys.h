@@ -63,6 +63,7 @@ typedef void (*gsm_sys_thread_fn)(void *);
 
 #define GSM_SYS_PORT_CMSIS_OS               1   /*!< CMSIS-OS based port for OS systems capable of ARM CMSIS standard */
 #define GSM_SYS_PORT_WIN32                  2   /*!< WIN32 based port to use GSM library with Windows applications */
+#define GSM_SYS_PORT_FREERTOS               3   /*!< FREERTOS based port to use GSM library with Windows applications */
 #define GSM_SYS_PORT_USER                   99  /*!< User custom implementation.
                                                     When port is selected to user mode, user must provide "gsm_sys_user.h" file,
                                                     which is not provided with library. Refer to `system/gsm_sys_template.h` file for more information
@@ -75,8 +76,10 @@ typedef void (*gsm_sys_thread_fn)(void *);
 /* Decide which port to include */
 #if GSM_CFG_SYS_PORT == GSM_SYS_PORT_CMSIS_OS
 #include "system/gsm_sys_cmsis_os.h"
-#elif GSM_CFG_SYS_PORT == GSM_SYS_PORT_WIN32
-#include "system/gsm_sys_win32.h"
+#elif GSM_CFG_SYS_PORT == GSM_SYS_PORT_FREERTOS
+#include "system/gsm_sys_freertos.h"
+#elif GSM_CFG_SYS_PORT == GSM_SYS_PORT_USER
+#include "gsm_sys_user.h"
 #elif GSM_CFG_SYS_PORT == GSM_SYS_PORT_USER
 #include "gsm_sys_user.h"
 #endif

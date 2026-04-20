@@ -58,8 +58,8 @@ static uint8_t      usart_mem[GSM_USART_DMA_RX_BUFF_SIZE];
 static uint8_t      is_running, initialized;
 //static size_t       old_pos;
 
-static uint8_t read_offset = 0;
-static uint8_t buff_offset = 0;
+static uint16_t read_offset = 0;
+static uint16_t buff_offset = 0;
 
 /* USART thread */
 #if (osCMSIS < 0x20000U)
@@ -67,7 +67,6 @@ static void usart_ll_thread(void * arg);
 static osThreadDef(usart_ll_thread, usart_ll_thread, osPriorityNormal, 0, 1024);
 #endif
 static osThreadId usart_ll_thread_id;
-
 
 /* Message queue */
 #if (osCMSIS < 0x20000U)
@@ -202,8 +201,8 @@ configure_uart(uint32_t baudrate) {
 #if (osCMSIS < 0x20000U)
         usart_ll_thread_id = osThreadCreate(osThread(usart_ll_thread), usart_ll_queue_id);
 #else
-        if (!gsm_sys_thread_create(NULL, "usart_task", usart_ll_thread, NULL,
-             GSM_SYS_THREAD_SS, GSM_SYS_THREAD_PRIO)) {
+        if (!gsm_sys_thread_create(&usart_ll_thread_id, "usart_task", 
+            usart_ll_thread, NULL, GSM_SYS_THREAD_SS, GSM_SYS_THREAD_PRIO)) {
         GSM_DBG("%s Cannot allocate usart read thread!\n", __func__);
     }
 #endif

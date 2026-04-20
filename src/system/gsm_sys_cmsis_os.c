@@ -38,7 +38,7 @@
 
 #if !__DOXYGEN__
 
-static osMutexId sys_mutex;                     /* Mutex ID for main protection */
+static gsm_sys_mutex_t sys_mutex;              /* Mutex ID for main protection */
 
 uint8_t
 gsm_sys_init(void) {
@@ -214,8 +214,9 @@ gsm_sys_mbox_get(gsm_sys_mbox_t* b, void* m, uint32_t timeout) {
         return osKernelSysTick() - time;        /* Return time required for reading message */
     }
 #else
-    osStatus_t stat;
+    osStatus_t stat;  // TODO  - проверить, что в m записывается адрес сообщения
     stat = osMessageQueueGet(*b, m, NULL, !timeout ? osWaitForever : timeout); /* Get message event */
+    
     if (stat == osOK) {
         return osKernelSysTick() - time;        /* Return time required for reading message */
     }

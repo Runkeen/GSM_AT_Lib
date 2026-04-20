@@ -15,12 +15,26 @@ enum {
     STACK_TYPE_STATIC,
 };
 
-#include "system/gsm_sys_cmsis_os.h"
+#include "gsm/gsm_config.h"
+#include "system/gsm_sys.h"
 #include <FreeRTOS.h>
+
+#include "usart.h"
 
 struct gsm_task_stack {
     StackType_t buf[GSM_SYS_THREAD_SS];
     StaticTask_t tcb;
+};
+
+typedef enum {
+    GSM_STATE_UNKNOWN,
+    GSM_INIT_CMPL,
+    GSM_SIM_CMPL,
+    GSM_MODEM_CMPL
+} gsm_state_t;
+
+struct gsm_init_msg {
+    gsm_state_t state;
 };
 
 struct gsm_ctx {
@@ -28,6 +42,9 @@ struct gsm_ctx {
     uint8_t stack_num;
     void* priv;
     uint8_t stack_type;
+    gsm_sys_mbox_t init_mbx;          /*!< init complete message queue handle */
+    gsm_sys_mbox_t sio_mbx;          /*!< sio activate message queue handle */
+    struct gsm_init_msg msg;
 };
 
 uint8_t gsm_ctx_set(struct gsm_ctx* ctx);
